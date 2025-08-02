@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>✨Plan today Delay forever</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
+
+    body {
+      font-family: 'Courier', sans-serif;
+      background: url('new.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #222;
+      padding: 30px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: rgba(255,253.245,0.8);
+      padding: 35px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h1, h3, h4 {
+      text-align: center;
+      color: #ff4e9b;
+    }
+
+    input, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 14px;
+      border-radius: 12px;
+      border: 2px solid #ffb6d5;
+      font-size: 15px;
+      background: #fffafc;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #ff4e9b;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+      color: #ff4e9b;
+    }
+
+    button {
+      background-color: #ff4e9b;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #e03e89;
+      transform: scale(1.02);
+    }
+
+    .task-box {
+      background: #ffe3ef;
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+    }
+
+    .result {
+      margin-top: 30px;
+    }
+
+    hr {
+      border: none;
+      border-top: 2px dashed #ff4e9b;
+      margin: 25px 0;
+    }
+
+    p.center {
+      text-align: center;
+      font-style: italic;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>✨ Plan Today Delay Forever</h1>
+    <p class="center">You give us tasks, we give you delusion 💅</p>
+
+    <!-- Wake Time -->
+    <label>⏰ What time do you want to wake up?</label>
+    <input type="time" id="wakeUpTime">
+
+    <hr>
+
+    <!-- Task Input -->
+    <h3>➕ Add What You *Think* You'll Do</h3>
+    <input type="text" id="taskName" placeholder="eg.Be Productive">
+    <label>Start Time</label>
+    <input type="time" id="taskStart">
+    <label>End Time</label>
+    <input type="time" id="taskEnd">
+    <button onclick="addTask()">Add Task</button>
+
+    <div id="taskList"></div>
+
+    <hr>
+
+    <button onclick="generateTimetable()">🎉 Show Me My Totally Realistic Plan</button>
+
+    <div class="result" id="output"></div>
+  </div>
+
+  <script>
+    const tasks = [];
+
+    const fixedTimeSlots = [
+      { time: "10:00 AM - 10:15 AM", comment: "Cause 1 hr is enough for u GENIUS 📱" },
+      { time: "10:30 PM - 11:00 AM", comment: "GURLLL...U SPEND ONLY 30 MIN ON THIS!!!!!!!!DAMNNNN" },
+      { time: "11:00 PM - 12:00 PM", comment: "Take some rest you'r not a robot babe🍫" },
+      { time: "12:00 PM - 13:00 PM", comment: "Cz it's not just eating.One hour for food and zero regrets 🌅" },
+      { time: "7:00 PM - 8:00 PM", comment: "Deep study? More like deep instagram. 🕳️📺" },
+      { time: "9:00 PM - 10:00 PM", comment: "Bathingg??Your cat doesn't took a bath rt????So whts the matter🤯" },
+      { time: "11:00 PM - Forever", comment: "Sleep? Nah, let’s overthink life choices. 🛏️💭" }
+    ];
+
+    function addTask() {
+      const name = document.getElementById("taskName").value.trim();
+      const start = document.getElementById("taskStart").value;
+      const end = document.getElementById("taskEnd").value;
+
+      if (!name || !start || !end) {
+        alert("Please fill in all task details.");
+        return;
+      }
+
+      tasks.push({ name });
+      displayTasks();
+
+      document.getElementById("taskName").value = '';
+      document.getElementById("taskStart").value = '';
+      document.getElementById("taskEnd").value = '';
+    }
+
+    function displayTasks() {
+      const taskList = document.getElementById("taskList");
+      taskList.innerHTML = "<h4>📝 Your Added Tasks</h4>";
+      tasks.forEach(task => {
+        taskList.innerHTML += `
+          <div class="task-box">
+            <strong>${task.name}</strong><br>
+            <em>(You *think* you’ll do this)</em>
+          </div>`;
+      });
+    }
+
+    function generateTimetable() {
+      const output = document.getElementById("output");
+      output.innerHTML = "<h3>📅 Your Totally 'Productive' Timetable</h3>";
+
+      // Add Wake Up block with fixed time
+      output.innerHTML += `
+        <div class="task-box">
+          <strong>Wake Up</strong><br>
+          <em>10:30 AM</em><br>
+          💬 Hey prettyy.....Ur beauty needs atleast 8 hrs to regenerate.Jst sleep darling so that u can be more productive at night.....Sleep is self-care, not laziness 😴✨
+        </div>`;
+
+      // Loop over tasks and assign fixed slot (cyclically)
+      tasks.forEach((task, index) => {
+        const slot = fixedTimeSlots[index % fixedTimeSlots.length];
+        output.innerHTML += `
+          <div class="task-box">
+            <strong>${task.name}</strong><br>
+            <em>${slot.time}</em><br>
+            💬 ${slot.comment}
+          </div>`;
+      });
+
+      if (tasks.length === 0) {
+        output.innerHTML += `
+          <div class="task-box">
+            <strong>No Tasks</strong><br>
+            <em>Whole day is free (to waste)</em><br>
+            💬 “Procrastination is an art. You're Picasso.” 🎨
+          </div>`;
+      }
+    }
+  </script>
+</body>
+</html>
